@@ -40,3 +40,59 @@ npm run build
 ```
 yarn build
 ```
+
+## Данные и типы данных
+
+Продукт
+```
+interface IProduct {
+    id: string,
+    description: string,
+    image: string,
+    title: string,
+    category: string,
+    price: number | null
+}
+```
+Заказ товара
+```
+interface IOrder {
+    payment: number,
+    address: string,
+    email: string,
+    phone: number,
+    total: number,
+    items: string[]
+}
+```
+Результат заказа
+```
+interface IOrderResult {
+    id: string,
+    total: number 
+}
+```
+Интерфейс для API
+```
+interface ILarekApi {
+    getProducts(): Promise<ApiListResponse<IProduct>>
+    getProduct(id: string): Promise<IProduct>
+    }
+```
+Данные модального окна товара
+```
+type TProductInfo = IProduct
+```
+Данные товара в коризине
+```
+type TProductBakets = Pick<IProduct, 'id' | 'title' | 'price'>
+```
+Данные модального окна заказать товар
+```
+type TOrderInfo = Pick<IOrder, 'payment' | 'address'>
+```
+Вся информация заказа
+```
+type TOrderTotalInfo = Exclude<IOrder , 'items'>
+```
+
