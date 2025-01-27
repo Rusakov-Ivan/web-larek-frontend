@@ -1,40 +1,92 @@
-import { ApiListResponse } from "../components/base/api"
+export interface IAppData {
+    catalog: IProduct[]
+    basket: IProduct[]
+    order: IOrder
+}
+
+export interface IPage {
+    counter: number
+    catalog: HTMLElement[]
+    locked: boolean
+}
 
 export interface IProduct {
-    id: string,
-    description: string,
-    image: string,
-    title: string,
-    category: string,
-    price: number | null
+	id: string;
+	description: string;
+	image: string;
+	title: string;
+	category: string;
+	price: number | null;
+	
+}
+
+export interface ICardProduct extends IProduct {
+	button: string;
+	state: boolean;
+}
+
+export interface IModal {
+    content: HTMLElement
+}
+
+ export interface IFormState {
+    valid: boolean
+    errors: string[]
+}
+
+export interface IBasket {
+    items: HTMLElement[]
+    total: number
 }
 
 
-export interface IOrder {
-    payment: number,
-    address: string,
-    email: string,
-    phone: number,
-    total: number,
-    items: string[]
+export interface IIndex {
+	index: number;
+}
+
+export interface IContacts {
+	email: string;
+	phone: string;
+}
+
+export interface IOrder extends IContacts {
+	payment: string;
+	address: string;
+	total: number;
+	items: string[];
 }
 
 export interface IOrderResult {
-    id: string,
-    total: number 
+	id: string;
+	total: number;
 }
 
+export interface ISuccess {
+	total: number;
+}
+
+export interface ISuccessActions {
+	onClick: () => void;
+}
+
+export interface ICardActions {
+    onClick: (event: MouseEvent) => void;
+}
+
+
 export interface ILarekApi {
-    getProducts(): Promise<ApiListResponse<IProduct>>
-    getProduct(id: string): Promise<IProduct>
-    createOrder(order: IOrder): Promise<IOrderResult>
-    }
+	getProducts: () => Promise<IProduct[]>;
+	createOrder: (order: IOrder) => Promise<IOrderResult>;
+}
 
-export type TProductInfo = IProduct
+export enum ProductCategory {
+	'софт-скил' = 'soft',
+	'другое' = 'other',
+	'хард-скил' = 'hard',
+	'дополнительное' = 'additional',
+	'кнопка' = 'кнопка'
+}
 
-export type TProductBakets = Pick<IProduct, 'id' | 'title' | 'price'>
+export type TProductInBasket = Pick<IProduct, 'id' | 'title' | 'price'>;
 
-export type TOrderInfo = Pick<IOrder, 'payment' | 'address'>
-
-export type TOrderTotal = Exclude<IOrder , 'items'>
-
+export type TFormErrors = Partial<Record<keyof IOrder, string>>;
