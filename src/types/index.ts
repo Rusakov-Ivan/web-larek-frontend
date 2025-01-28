@@ -2,6 +2,7 @@ export interface IAppData {
     catalog: IProduct[]
     basket: IProduct[]
     order: IOrder
+	formErrors: TFormErrors
 }
 
 export interface IPage {
@@ -17,7 +18,6 @@ export interface IProduct {
 	title: string;
 	category: string;
 	price: number | null;
-	
 }
 
 export interface ICardProduct extends IProduct {
@@ -35,34 +35,22 @@ export interface IModal {
 }
 
 export interface IBasket {
-    items: HTMLElement[]
+    items: string[]
     total: number
 }
-
-
 export interface IIndex {
 	index: number;
 }
 
-export interface IContacts {
+export interface IOrder extends IBasket {
+	payment: string;
+	address: string;
 	email: string;
 	phone: string;
 }
 
-export interface IOrder extends IContacts {
-	payment: string;
-	address: string;
-	total: number;
-	items: string[];
-}
-
-export interface IOrderResult {
+export interface IOrderResult extends IBasket {
 	id: string;
-	total: number;
-}
-
-export interface ISuccess {
-	total: number;
 }
 
 export interface ISuccessActions {
@@ -72,7 +60,6 @@ export interface ISuccessActions {
 export interface ICardActions {
     onClick: (event: MouseEvent) => void;
 }
-
 
 export interface ILarekApi {
 	getProducts: () => Promise<IProduct[]>;
@@ -86,6 +73,8 @@ export enum ProductCategory {
 	'дополнительное' = 'additional',
 	'кнопка' = 'кнопка'
 }
+
+export type TSuccess = Pick<IBasket, 'total'>
 
 export type TProductInBasket = Pick<IProduct, 'id' | 'title' | 'price'>;
 
