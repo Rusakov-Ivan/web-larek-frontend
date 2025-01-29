@@ -12,10 +12,8 @@ protected _price: HTMLElement;
 protected _button: HTMLButtonElement;
 protected _description: HTMLElement;
 
-
 constructor (container: HTMLElement, actions: ICardActions) {
     super(container);
-    
     
     this._title = ensureElement<HTMLElement>('.card__title', container);
     this._image = ensureElement<HTMLImageElement>('.card__image', container);
@@ -23,7 +21,6 @@ constructor (container: HTMLElement, actions: ICardActions) {
     this._category = ensureElement<HTMLElement>('.card__category', container);
     this._description = container.querySelector('.card__text');
     this._button = container.querySelector('.card__button');
-
 
     if (actions?.onClick) {
         if (this._button) {

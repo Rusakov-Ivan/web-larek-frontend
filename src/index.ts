@@ -9,8 +9,8 @@ import { CardProduct } from './components/view/CardProduct';
 import { Page } from './components/view/Page';
 import {  IOrder, IProduct } from './types';
 import { Modal } from './components/view/Modal';
-import { Basket, ProductInBasket} from './components/view/Basket';
-
+import { Basket,} from './components/view/Basket';
+import { ProductInBasket } from './components/view/ProductInBasket';
 import { Contacts } from './components/view/Contacts';
 import { Order } from './components/view/Order';
 import { Success } from './components/view/Success';
@@ -162,30 +162,24 @@ api.createOrder({
  ...appData.getOrder(),
  total: appData.getTotalPrice(),
  items: appData.getBasket().map(item => item.id)
-
 })
-	.then(() => {
-		const successModal = new Success(cloneTemplate(successTemplate),{
-			onClick(){
-				modal.close()
-				appData.clearBasket()
-				appData.clearOrder()
-				page.counter = appData.getBasket().length;
-				events.emit('clear:basket')
-				events.emit('clear:order')
-		
-			}
-		})
-		modal.render({
-			content: successModal.render({
-			total: appData.getTotalPrice()
-			})
-		})
+.then (() => {
+	const successModal = new Success(cloneTemplate(successTemplate), events)
+
+	modal.content = successModal.render({
+		total: appData.getTotalPrice()
 	})
-	.catch(err => console.error(err))
+	appData.clearBasket(),
+	appData.clearOrder(),
+	page.counter = appData.getBasket().length
 })
+.catch(err => console.error(err))
+ })
 
-events.on('success:close', () => modal.close());
+ // Закрытие модального окна успешной покупки
+ events.on('success:close', () => {
+	modal.close()
+ })
 
 // Блокировка скроллинга при открытии модального окна
 events.on('modal:open', () => {

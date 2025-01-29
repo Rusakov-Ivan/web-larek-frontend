@@ -9,7 +9,7 @@ export class Order extends Form<IOrder> {
 	protected _inputAddress: HTMLInputElement;
 	protected _buttonSubmit: HTMLButtonElement;
 
-	constructor(container: HTMLFormElement, events: IEvents) {
+	constructor(container: HTMLFormElement, protected events: IEvents) {
 		super(container, events);
 
 		this._buttonPaymentOnline = ensureElement<HTMLButtonElement>(

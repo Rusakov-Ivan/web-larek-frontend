@@ -7,7 +7,7 @@ export class Contacts extends Form<IOrder> {
 
 	protected _buttonSubmit: HTMLButtonElement;
 
-	constructor(container: HTMLFormElement, events: IEvents) {
+	constructor(container: HTMLFormElement, protected events: IEvents) {
 		super(container, events);
 	
 		this._buttonSubmit = ensureElement<HTMLButtonElement>( '.button[type=submit]', container);
