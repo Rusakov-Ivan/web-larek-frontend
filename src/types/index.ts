@@ -53,10 +53,6 @@ export interface IOrderResult extends IBasket {
 	id: string;
 }
 
-export interface ISuccessActions {
-	onClick: () => void;
-}
-
 export interface ICardActions {
     onClick: (event: MouseEvent) => void;
 }
