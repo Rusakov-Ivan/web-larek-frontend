@@ -1,5 +1,5 @@
 import { Api, ApiListResponse } from "../base/api";
-import { IProduct, IOrder, ILarekApi, IOrderResult } from "../../types";
+import { IProduct, IOrder, ILarekApi, IOrderResult} from "../../types";
 
 export class LarekApi extends Api implements ILarekApi{
     readonly cdn: string;

@@ -1,9 +1,7 @@
-
 import { Component } from "../base/Component";
 import { IBasket } from "../../types";
 import { ensureElement, createElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
-
   
   export class Basket extends Component<IBasket> {
     protected _list: HTMLElement;
@@ -28,7 +26,7 @@ import { IEvents } from "../base/events";
     disableButton(value: string){
       this._button.setAttribute('disabled', value)
     };
-  
+
     set items(items: HTMLElement[]) {
       if(items.length) {
         this._list.replaceChildren(...items);
@@ -42,7 +40,6 @@ import { IEvents } from "../base/events";
       }
     }
   
-
     set total(total: number) {
       this.setText(this._total, `${total.toString()}` + ' синапсов');
     }

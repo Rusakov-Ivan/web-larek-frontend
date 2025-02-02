@@ -1,9 +1,10 @@
 import { Form } from './Form';
-import { IOrder } from '../../types';
+import { IOrder} from '../../types';
 import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 
 export class Order extends Form<IOrder> {
+	
 	protected _buttonPaymentOnline: HTMLButtonElement;
 	protected _buttonPaymentCash: HTMLButtonElement;
 	protected _inputAddress: HTMLInputElement;
@@ -29,31 +30,24 @@ export class Order extends Form<IOrder> {
 			this.container
 		);
 
-		this._buttonPaymentOnline.addEventListener('click', () => {
-			this.payment = 'card';
+		 this._buttonPaymentOnline.addEventListener('click', () => {
 			this.onInputChange('payment', 'card');
-		});
+			
+		 });
 
-		this._buttonPaymentCash.addEventListener('click', () => {
-			this.payment = 'cash';
+		 this._buttonPaymentCash.addEventListener('click', () => {
 			this.onInputChange('payment', 'cash');
-		});
+		 });
 
 		this._buttonSubmit.addEventListener('click', () => {
 			events.emit('contacts:open');
 		});
 	}
-
-	set payment(value: string) {
-		this._buttonPaymentOnline.classList.toggle(
-			'button_alt-active',
-			value === 'card'
-		);
-		this._buttonPaymentCash.classList.toggle(
-			'button_alt-active',
-			value === 'cash'
-		);
-	}
+	
+	 set payment(value: string) {
+	 	 this.toggleClass(this._buttonPaymentOnline, 'button_alt-active', value === 'card');
+	 	 this.toggleClass(this._buttonPaymentCash, 'button_alt-active', value === 'cash');
+	 }
 
 	set address(value: string) {
 		this._inputAddress.value = value;

@@ -1,26 +1,11 @@
-import { IEvents } from '../base/events';
 import { Model } from '../base/Model';
 import { IAppData, IProduct, IOrder, TFormErrors } from '../../types';
 
 export class AppData extends Model<IAppData> {
 	protected _catalog: IProduct[];
-	protected _basket: IProduct[];
+	protected _basket: IProduct[] = [];
 	protected _order: IOrder;
 	protected _formErrors: TFormErrors = {};
-
-	constructor(
-		data: Partial<IAppData>,
-		protected events: IEvents,
-		products: IProduct[],
-		basket: IProduct[],
-		order: IOrder
-	) {
-		super(data, events);
-
-		this._catalog = products;
-		this._basket = basket;
-		this._order = order;
-	}
 
 	getCatalog() {
 		return this._catalog;
@@ -35,9 +20,18 @@ export class AppData extends Model<IAppData> {
 		return this._basket;
 	}
 
+	stateCard(product: IProduct): boolean {
+		if (this._basket.some((item) => item === product)) {
+			return true
+		}
+	}
+
 	addProductToBasket(product: IProduct) {
-		this._basket.push(product);
-		this.emitChanges('basket:changed', { basket: this._basket });
+		if (!this._basket.some((item) => item === product)) {
+			this._basket.push(product);
+			this.emitChanges('basket:changed', { basket: this._basket });
+			
+		}
 	}
 
 	removeProductFromBasket(product: IProduct) {
@@ -46,6 +40,14 @@ export class AppData extends Model<IAppData> {
 			this._basket.splice(index, 1);
 		}
 		this.emitChanges('basket:changed', { basket: this._basket });
+	}
+
+	getBasketCount() {
+		return this._basket.length;
+	}
+
+	getPaymentMethod() {
+		return this._order.payment;
 	}
 
 	getTotalPrice() {
@@ -67,8 +69,6 @@ export class AppData extends Model<IAppData> {
 			phone: '',
 			payment: null,
 			address: '',
-			items: [],
-			total: 0,
 		};
 		this.emitChanges('order:changed', { order: this._order });
 	}
@@ -85,19 +85,16 @@ export class AppData extends Model<IAppData> {
 
 	validateOrder() {
 		const errors: typeof this._formErrors = {};
-		const addressError = /^[а-яА-ЯёЁa-zA-Z]{7,}$/;
-		const phoneError = /^\+7\d{10}$/;
-		const emailError = /^\S+@\S+\.\S+$/;
 
 		if (!this._order.payment) {
 			errors.payment = 'Необходимо выбрать способ оплаты';
-		} else if (!addressError.test(this._order.address)) {
+		} else if (!this._order.address) {
 			errors.address = 'Необходимо указать адрес дотавки';
 		}
 
-		if (!emailError.test(this._order.email)) {
+		if (!this._order.email) {
 			errors.email = 'Необходимо указать адрес электроной почты';
-		} else if (!phoneError.test(this._order.phone)) {
+		} else if (!this._order.phone) {
 			errors.phone = 'Необходимо указать номер телефона';
 		}
 
